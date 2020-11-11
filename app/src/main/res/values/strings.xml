@@ -21,4 +21,7 @@
     <string name="create_task">Create Task</string>
     <string name="schedule_task">Schedule Task</string>
     <string name="add_destination">Add Destination</string>
+    <string name="difficulty_easy">Difficulty: Easy</string>
+    <string name="enter_task_name">Enter Task Name</string>
+    <string name="enter_task_description">Enter Task Description</string>
 </resources>

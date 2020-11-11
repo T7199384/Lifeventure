@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 
 public class TaskActivity extends AppCompatActivity {
@@ -36,5 +37,19 @@ public class TaskActivity extends AppCompatActivity {
                 startActivity(new Intent(TaskActivity.this, SettingsActivity.class));
             }
         });
+
+
+        Button createTask = findViewById(R.id.taskCreate);
+        createTask.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CreateTaskDialog();
+            }
+        });
+    }
+
+    public void CreateTaskDialog() {
+        CreateTaskDialog createTaskDialog = new CreateTaskDialog();
+        createTaskDialog.show(getSupportFragmentManager(),"Create Task");
     }
 }
