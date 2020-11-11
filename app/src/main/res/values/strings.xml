@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">Lifeventure</string>
+    <string name="title_activity_task">TaskActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_profile">Profile</string>
+    <string name="title_fight">Fight</string>
+    <string name="title_settings">Settings</string>
+    <string name="title_activity_profile">ProfileActivity</string>
+    <string name="title_tasks">Tasks</string>
+    <string name="title_activity_fight">FightActivity</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="task_activity_desc">Button to the Task Activity</string>
+    <string name="profile_activity_desc">Button to the Profile Activity</string>
+    <string name="fight_activity_desc">Button to the Fight Activity</string>
+    <string name="settings_activity_desc">Button to the Settings Activity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="create_task">Create Task</string>
+    <string name="schedule_task">Schedule Task</string>
+    <string name="add_destination">Add Destination</string>
+</resources>

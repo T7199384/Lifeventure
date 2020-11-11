@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_task"
+        android:icon="@drawable/ic_format_align_center_black_48dp"
+        android:title="@string/title_tasks" />
+
+    <item
+        android:id="@+id/navigation_fight"
+        android:icon="@drawable/ic_sentiment_very_dissatisfied_black_48dp"
+        android:title="@string/title_fight" />
+
+    <item
+        android:id="@+id/navigation_settings"
+        android:icon="@drawable/ic_settings_applications_black_48dp"
+        android:title="@string/title_settings" />
+
+</menu>
