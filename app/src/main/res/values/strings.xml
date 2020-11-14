@@ -24,4 +24,5 @@
     <string name="difficulty_easy">Difficulty: Easy</string>
     <string name="enter_task_name">Enter Task Name</string>
     <string name="enter_task_description">Enter Task Description</string>
+    <string name="difficulty_very_easy">Difficulty: Very Easy</string>
 </resources>

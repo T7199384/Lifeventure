@@ -8,7 +8,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 
-public class TaskActivity extends AppCompatActivity {
+import com.example.lifeventure.Classes.Task;
+import com.example.lifeventure.Dialogs.CreateTaskDialog;
+
+public class TaskActivity extends AppCompatActivity implements CreateTaskDialog.TaskCreateListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,5 +54,10 @@ public class TaskActivity extends AppCompatActivity {
     public void CreateTaskDialog() {
         CreateTaskDialog createTaskDialog = new CreateTaskDialog();
         createTaskDialog.show(getSupportFragmentManager(),"Create Task");
+    }
+
+    @Override
+    public void apply(String uName, String uDesc, int tDiffInt) {
+        Task task = new Task(uName, uDesc, tDiffInt, false);
     }
 }

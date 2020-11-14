@@ -38,7 +38,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
-        android:max="5"/>
+        android:max="4"/>
 
     <TextView
         android:id="@+id/difficultyText"
@@ -50,7 +50,7 @@
         android:layout_marginStart="0dp"
         android:layout_marginTop="0dp"
         android:layout_marginEnd="0dp"
-        android:text="@string/difficulty_easy"
+        android:text="@string/difficulty_very_easy"
         android:textAlignment="center" />
 
     <Button
