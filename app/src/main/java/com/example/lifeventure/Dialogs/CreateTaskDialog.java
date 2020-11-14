@@ -81,6 +81,15 @@ public class CreateTaskDialog extends AppCompatDialogFragment{
                 String uName = tName.getText().toString();
                 String uDesc = tDesc.getText().toString();
                 listener.apply(uName, uDesc,tDiffInt);
+                dismiss();
+            }
+        });
+
+        Button cancel = view.findViewById(R.id.cancelTaskButton);
+        cancel.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                dismiss();
             }
         });
 

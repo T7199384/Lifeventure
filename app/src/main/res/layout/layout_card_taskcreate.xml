@@ -1,6 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="2dp">
 
-</LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="2dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/taskCardTitle"
+            android:layout_width="76dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:layout_weight="1"
+            android:text="@string/cardtitle"
+            android:textAlignment="center" />
+
+        <TextView
+            android:id="@+id/taskCardDesc"
+            android:layout_width="106dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:maxLines="6"
+            android:minLines="3"
+            android:text="@string/carddesc"
+            android:textAlignment="center" />
+
+        <TextView
+            android:id="@+id/taskCardExp"
+            android:layout_width="73dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/cardexp"
+            android:textAlignment="center" />
+
+        <TextView
+            android:id="@+id/taskCardSche"
+            android:layout_width="73dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:maxLines="2"
+            android:minLines="2"
+            android:text="@string/carddate"
+            android:textAlignment="center" />
+
+        <CheckBox
+            android:id="@+id/taskCardComplete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0" />
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
