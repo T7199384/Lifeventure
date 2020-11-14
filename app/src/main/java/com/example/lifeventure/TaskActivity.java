@@ -8,7 +8,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageButton;
+import android.widget.TableRow;
+import android.widget.TextView;
 
 import com.example.lifeventure.Classes.Task;
 import com.example.lifeventure.Classes.TaskAdapter;
@@ -16,12 +19,14 @@ import com.example.lifeventure.Dialogs.CreateTaskDialog;
 
 import java.util.ArrayList;
 
+import static android.view.View.INVISIBLE;
+
 public class TaskActivity extends AppCompatActivity implements CreateTaskDialog.TaskCreateListener {
 
     private ArrayList<Task> checkList = new ArrayList<>();
 
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private TaskAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
     @Override
@@ -74,6 +79,25 @@ public class TaskActivity extends AppCompatActivity implements CreateTaskDialog.
 
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
+        mAdapter.setOnItemClickListener(new TaskAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                TextView hideTitle = findViewById(R.id.taskCardTitle);
+                TextView hideDesc = findViewById(R.id.taskCardDesc);
+                TextView hideExp = findViewById(R.id.taskCardExp);
+                TextView hideDate = findViewById(R.id.taskCardSche);
+                CheckBox hideCheck = findViewById(R.id.taskCardComplete);
+                checkList.get(position).showDesc(hideTitle,hideDesc,hideExp,hideDate,hideCheck);
+            }
+
+            @Override
+            public void onCheck(int position) {
+                checkList.remove(position);
+                checkList.get(position).setTaskClassComplete(false);
+                mAdapter.notifyItemRemoved(position);
+            }
+        });
+
     }
 
     public void createList() {

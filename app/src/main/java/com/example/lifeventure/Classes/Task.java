@@ -1,5 +1,11 @@
 package com.example.lifeventure.Classes;
 
+import android.view.View;
+import android.widget.CheckBox;
+import android.widget.TextView;
+
+import com.example.lifeventure.R;
+
 import java.util.Date;
 
 public class Task {
@@ -65,5 +71,20 @@ public class Task {
 
     public void setTaskClassDate(Date taskClassDate) {
         this.taskClassDate = taskClassDate;
+    }
+
+    public void showDesc(TextView hideTitle, TextView hideDesc, TextView hideExp,TextView hideDate,TextView hideCheck){
+        if(hideTitle.getVisibility()== View.GONE){
+            hideTitle.setVisibility(View.VISIBLE);
+            hideExp.setVisibility(View.VISIBLE);
+            hideDate.setVisibility(View.VISIBLE);
+            hideCheck.setVisibility(View.VISIBLE);
+        }
+        else{
+            hideTitle.setVisibility(View.GONE);
+            hideExp.setVisibility(View.GONE);
+            hideDate.setVisibility(View.GONE);
+            hideCheck.setVisibility(View.GONE);
+        }
     }
 }
