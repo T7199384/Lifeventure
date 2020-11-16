@@ -1,8 +1,10 @@
 package com.example.lifeventure.Dialogs;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,9 +17,10 @@ import android.widget.TimePicker;
 
 import androidx.appcompat.app.AppCompatDialogFragment;
 
+import com.example.lifeventure.Classes.AlertReceiver;
 import com.example.lifeventure.R;
 
-import java.util.Date;
+import java.util.Calendar;
 
 public class ScheduleTaskDialog extends AppCompatDialogFragment{
 
@@ -28,6 +31,8 @@ public class ScheduleTaskDialog extends AppCompatDialogFragment{
     private TaskScheduleListener listener;
     private DatePicker datePicker;
     private TimePicker timePicker;
+
+    private Context context;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -88,8 +93,16 @@ public class ScheduleTaskDialog extends AppCompatDialogFragment{
                 String uName = tName.getText().toString();
                 String uDesc = tDesc.getText().toString();
                 String uStrDate = datePicker.getDayOfMonth()+"."+datePicker.getMonth()+"."+datePicker.getYear()+"\r"+timePicker.getHour()+":"+timePicker.getMinute();
-                listener.scheApply(uName, uDesc,tDiffInt, uStrDate);
                 //Date uDate = datePicker.getFirstDayOfWeek()+datePicker.getDayOfMonth()+datePicker.getYear();
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(Calendar.HOUR_OF_DAY, timePicker.getHour());
+                calendar.set(Calendar.MINUTE, timePicker.getMinute());
+                calendar.set(Calendar.SECOND,0);
+                calendar.set(Calendar.YEAR, datePicker.getYear());
+                calendar.set(Calendar.MONTH, datePicker.getMonth());
+                calendar.set(Calendar.DAY_OF_MONTH, datePicker.getDayOfMonth());
+
+                listener.scheApply(uName, uDesc,tDiffInt, uStrDate, calendar);
                 dismiss();
             }
         });
@@ -104,6 +117,7 @@ public class ScheduleTaskDialog extends AppCompatDialogFragment{
 
         return builder.create();    }
 
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -116,6 +130,6 @@ public class ScheduleTaskDialog extends AppCompatDialogFragment{
     }
 
     public interface TaskScheduleListener{
-        void scheApply(String uName, String uDesc, int tDiffInt,String uStrDate);
+        void scheApply(String uName, String uDesc, int tDiffInt, String uStrDate, Calendar calendar);
         }
 }

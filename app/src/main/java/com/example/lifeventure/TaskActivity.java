@@ -4,23 +4,25 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
-import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.example.lifeventure.Classes.AlertReceiver;
 import com.example.lifeventure.Classes.Task;
 import com.example.lifeventure.Classes.TaskAdapter;
 import com.example.lifeventure.Dialogs.CreateTaskDialog;
 import com.example.lifeventure.Dialogs.ScheduleTaskDialog;
 
 import java.util.ArrayList;
-
-import static android.view.View.INVISIBLE;
+import java.util.Calendar;
 
 public class TaskActivity extends AppCompatActivity implements CreateTaskDialog.TaskCreateListener, ScheduleTaskDialog.TaskScheduleListener {
 
@@ -103,6 +105,7 @@ public class TaskActivity extends AppCompatActivity implements CreateTaskDialog.
             public void onCheck(int position) {
                 checkList.remove(position);
                 mAdapter.notifyItemRemoved(position);
+                cancelAlarm();
             }
         });
 
@@ -142,8 +145,29 @@ public class TaskActivity extends AppCompatActivity implements CreateTaskDialog.
     }
 
     @Override
-    public void scheApply(String uName, String uDesc, int tDiffInt, String uStrDate) {
+    public void scheApply(String uName, String uDesc, int tDiffInt, String uStrDate, Calendar calendar) {
         Task task = new Task(uName, uDesc, tDiffInt, false, uStrDate);
         insert(task);
+        startAlarm(calendar, uName, uStrDate);
+
+    }
+
+    private void startAlarm(Calendar calendar, String taskName, String taskDate) {
+        AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        AlertReceiver alertReceiver = new AlertReceiver();
+        alertReceiver.setTaskDate(taskDate);
+        alertReceiver.setTaskName(taskName);
+        Intent intent = new Intent(this, alertReceiver.getClass());
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
+
+        am.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+    }
+
+    private void cancelAlarm() {
+        AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, AlertReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
+
+        am.cancel(pendingIntent);
     }
 }
