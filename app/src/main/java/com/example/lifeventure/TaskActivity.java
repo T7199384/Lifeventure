@@ -16,12 +16,13 @@ import android.widget.TextView;
 import com.example.lifeventure.Classes.Task;
 import com.example.lifeventure.Classes.TaskAdapter;
 import com.example.lifeventure.Dialogs.CreateTaskDialog;
+import com.example.lifeventure.Dialogs.ScheduleTaskDialog;
 
 import java.util.ArrayList;
 
 import static android.view.View.INVISIBLE;
 
-public class TaskActivity extends AppCompatActivity implements CreateTaskDialog.TaskCreateListener {
+public class TaskActivity extends AppCompatActivity implements CreateTaskDialog.TaskCreateListener, ScheduleTaskDialog.TaskScheduleListener {
 
     private ArrayList<Task> checkList = new ArrayList<>();
 
@@ -66,6 +67,14 @@ public class TaskActivity extends AppCompatActivity implements CreateTaskDialog.
             }
         });
 
+        Button scheTask = findViewById(R.id.scheduleTask);
+        scheTask.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ScheTaskDialog();
+            }
+        });
+
         createList();
         buildRecycler();
 
@@ -93,7 +102,6 @@ public class TaskActivity extends AppCompatActivity implements CreateTaskDialog.
             @Override
             public void onCheck(int position) {
                 checkList.remove(position);
-                checkList.get(position).setTaskClassComplete(false);
                 mAdapter.notifyItemRemoved(position);
             }
         });
@@ -119,6 +127,11 @@ public class TaskActivity extends AppCompatActivity implements CreateTaskDialog.
         createTaskDialog.show(getSupportFragmentManager(),"Create Task");
     }
 
+    public void ScheTaskDialog() {
+        ScheduleTaskDialog scheTaskDialog = new ScheduleTaskDialog();
+        scheTaskDialog.show(getSupportFragmentManager(),"Schedule Task");
+    }
+
     @Override
     public void apply(String uName, String uDesc, int tDiffInt) {
         Task task = new Task(uName, uDesc, tDiffInt, false);
@@ -126,5 +139,11 @@ public class TaskActivity extends AppCompatActivity implements CreateTaskDialog.
         //Button createTask = findViewById(R.id.taskCreate);
         //createTask.setText(task.getTaskClassTitle());
 ;
+    }
+
+    @Override
+    public void scheApply(String uName, String uDesc, int tDiffInt, String uStrDate) {
+        Task task = new Task(uName, uDesc, tDiffInt, false, uStrDate);
+        insert(task);
     }
 }

@@ -41,7 +41,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.viewHolder> {
             taskAdapterTitle = itemView.findViewById(R.id.taskCardTitle);
             taskAdapterDesc = itemView.findViewById(R.id.taskCardDesc);
             taskAdapterExp = itemView.findViewById(R.id.taskCardExp);
-            taskAdapterDate = itemView.findViewById(R.id.taskCardComplete);
+            taskAdapterDate = itemView.findViewById(R.id.taskCardSche);
             taskAdapterCheck = itemView.findViewById(R.id.taskCardComplete);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -88,6 +88,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.viewHolder> {
         holder.taskAdapterDesc.setText(current.getTaskClassDesc());
         holder.taskAdapterExp.setText((int) current.getTaskClassExp()+" EXP");
         holder.taskAdapterDate.setText((CharSequence) current.getTaskClassDate());
+        holder.taskAdapterCheck.setChecked(false);
     }
 
     @Override

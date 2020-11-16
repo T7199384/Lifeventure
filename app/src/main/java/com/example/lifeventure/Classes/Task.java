@@ -14,7 +14,7 @@ public class Task {
     double taskClassExp;
     Boolean taskClassComplete;
 
-    Date taskClassDate;
+    String taskClassDate;
 
     public Task(String taskClassTitle, String taskClassDesc, int taskClassDiff, Boolean taskClassComplete) {
         this.taskClassTitle = taskClassTitle;
@@ -24,7 +24,7 @@ public class Task {
         taskClassExp = (taskClassDiff+1)*0.25*100;
     }
 
-    public Task(String taskClassTitle, String taskClassDesc, int taskClassDiff, Boolean taskClassComplete, Date taskClassDate) {
+    public Task(String taskClassTitle, String taskClassDesc, int taskClassDiff, Boolean taskClassComplete, String taskClassDate) {
         this.taskClassTitle = taskClassTitle;
         this.taskClassDesc = taskClassDesc;
         this.taskClassComplete = taskClassComplete;
@@ -65,11 +65,11 @@ public class Task {
         this.taskClassComplete = taskClassComplete;
     }
 
-    public Date getTaskClassDate() {
+    public String getTaskClassDate() {
         return taskClassDate;
     }
 
-    public void setTaskClassDate(Date taskClassDate) {
+    public void setTaskClassDate(String taskClassDate) {
         this.taskClassDate = taskClassDate;
     }
 
