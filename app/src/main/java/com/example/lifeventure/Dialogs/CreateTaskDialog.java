@@ -3,7 +3,6 @@ package com.example.lifeventure.Dialogs;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,7 +27,7 @@ public class CreateTaskDialog extends AppCompatDialogFragment{
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.layout_taskcreate, null);
+        View view = inflater.inflate(R.layout.layout_dialog_taskcreate, null);
 
         builder.setView(view);
         builder.setTitle("Create Task");

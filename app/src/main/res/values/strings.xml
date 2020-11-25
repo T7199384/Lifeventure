@@ -29,4 +29,6 @@
     <string name="carddesc">cardDesc</string>
     <string name="cardexp">cardExp</string>
     <string name="carddate">cardDate</string>
+    <string name="male">male</string>
+    <string name="female">female</string>
 </resources>
