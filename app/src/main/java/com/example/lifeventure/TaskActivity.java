@@ -8,12 +8,14 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.lifeventure.Classes.AlertReceiver;
 import com.example.lifeventure.Classes.Task;
@@ -32,6 +34,14 @@ public class TaskActivity extends AppCompatActivity implements CreateTaskDialog.
     private TaskAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
+    private int lvl;
+    private int exp;
+    int currentLvl;
+
+    public static final String PROFILE = null;
+    public static final int PROFILE_LEVEL = 1;
+    public static final int PROFILE_EXP = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +50,8 @@ public class TaskActivity extends AppCompatActivity implements CreateTaskDialog.
         final ImageButton profile= findViewById(R.id.profileButton);
         final ImageButton fight = findViewById(R.id.fightButton);
         final ImageButton settings = findViewById(R.id.settingsButton);
+
+        loadProfile();
 
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,9 +115,22 @@ public class TaskActivity extends AppCompatActivity implements CreateTaskDialog.
 
             @Override
             public void onCheck(int position) {
+                int addExp = (int) checkList.get(position).getTaskClassExp();
                 checkList.remove(position);
                 mAdapter.notifyItemRemoved(position);
                 cancelAlarm();
+                SharedPreferences sharedPreferences = getSharedPreferences(PROFILE, MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                exp=exp+addExp;
+                editor.putInt(String.valueOf(PROFILE_EXP), (exp));
+                Toast.makeText(TaskActivity.this, String.valueOf(exp), Toast.LENGTH_SHORT).show();
+                lvl =(((exp)/1000)+1);
+                editor.putInt(String.valueOf(PROFILE_LEVEL),lvl);
+                if(lvl>currentLvl){
+                    Toast.makeText(TaskActivity.this,"Level Up", Toast.LENGTH_SHORT).show();
+                }
+                currentLvl=lvl;
+                editor.apply();
             }
         });
 
@@ -169,5 +194,12 @@ public class TaskActivity extends AppCompatActivity implements CreateTaskDialog.
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
 
         am.cancel(pendingIntent);
+    }
+
+    public void loadProfile() {
+        SharedPreferences sharedPreferences = getSharedPreferences(PROFILE, MODE_PRIVATE);
+        lvl = sharedPreferences.getInt(String.valueOf(PROFILE_LEVEL),1);
+        exp = sharedPreferences.getInt(String.valueOf(PROFILE_EXP), 0);
+        currentLvl=PROFILE_LEVEL;
     }
 }

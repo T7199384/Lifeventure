@@ -20,10 +20,12 @@ public class MainActivity extends AppCompatActivity implements CharacterDialog.C
 
     private int gender;
     private int lvl;
+    private int exp;
 
     public static final String PROFILE = null;
     public static final int PROFILE_GENDER = 2;
     public static final int PROFILE_LEVEL = 1;
+    public static final int PROFILE_EXP = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements CharacterDialog.C
         SharedPreferences sharedPreferences = getSharedPreferences(PROFILE, MODE_PRIVATE);
         gender = sharedPreferences.getInt(String.valueOf(PROFILE_GENDER),-1);
         lvl = sharedPreferences.getInt(String.valueOf(PROFILE_LEVEL),1);
+        exp = sharedPreferences.getInt(String.valueOf(PROFILE_EXP), 0);
     }
 
     @Override
