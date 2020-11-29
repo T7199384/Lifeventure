@@ -200,6 +200,6 @@ public class TaskActivity extends AppCompatActivity implements CreateTaskDialog.
         SharedPreferences sharedPreferences = getSharedPreferences(PROFILE, MODE_PRIVATE);
         lvl = sharedPreferences.getInt(String.valueOf(PROFILE_LEVEL),1);
         exp = sharedPreferences.getInt(String.valueOf(PROFILE_EXP), 0);
-        currentLvl=PROFILE_LEVEL;
+        currentLvl=lvl;
     }
 }
