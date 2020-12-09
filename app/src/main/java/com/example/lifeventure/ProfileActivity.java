@@ -1,5 +1,7 @@
 package com.example.lifeventure;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -9,9 +11,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 
+import com.example.lifeventure.Dialogs.GearDialog;
 import com.example.lifeventure.Dialogs.LevelDisplayDialog;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 public class ProfileActivity extends AppCompatActivity {
@@ -23,6 +30,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     private int lvl;
     private int exp;
+    private ArrayList<String> gearPart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,28 +64,22 @@ public class ProfileActivity extends AppCompatActivity {
         lvl=profile.getInt(String.valueOf(PROFILE_LEVEL),1);
         exp=profile.getInt(String.valueOf(PROFILE_EXP),1);
 
+        gearPart = new ArrayList<>(7);
+        gearPart.add(0,"head");gearPart.add(1,"body");
+        gearPart.add(2,"leg");gearPart.add(3,"foot");
+        gearPart.add(4,"neck");gearPart.add(5,"ring");
+        gearPart.add(6,"brace");
+
         SharedPreferences gear = getSharedPreferences(GEAR, MODE_PRIVATE);
-        Set<String> gearSet = gear.getStringSet("gear",null);
-        if(gearSet==null){
-            for(int i=0;i<7;i++){
-                switch(i){
-                    case 7:
-                        gearSet.add("0");
-                        break;
-                    case 6:
-                        gearSet.add("0");
-                        break;
-                    case 5:
-                        gearSet.add("0");
-                        break;
-                    default:
-                        gearSet.add("1");
-                }
-                gearSet.add("1");
-            }
-            gear.edit().putStringSet("gear",gearSet);
-            gear.edit().commit();
+        SharedPreferences.Editor gearEditor =gear.edit();
+        for(int i=0;i<4;i++){
+            gearEditor.putInt(String.valueOf(gearPart.get(i)),1);
         }
+        for(int i=4;i<7;i++){
+            gearEditor.putInt(String.valueOf(gearPart.get(i)),0);
+        }
+        gearEditor.apply();
+
 
 
         Button level = findViewById(R.id.lvlButton);
@@ -90,6 +92,25 @@ public class ProfileActivity extends AppCompatActivity {
                 args.putInt("exp",exp);
                 levelDisplayDialog.setArguments(args);
                 levelDisplayDialog.show(getSupportFragmentManager(),null);
+            }
+        });
+
+        Button bGear = findViewById(R.id.gearButton);
+        bGear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GearDialog gearDialog = new GearDialog();
+                Bundle args = new Bundle();
+                SharedPreferences gearPref = getSharedPreferences(GEAR, MODE_PRIVATE);
+                ArrayList<Integer> argsList = new ArrayList<>(7);
+
+                for(int i=0;i<7;i++){
+                    int a = gearPref.getInt(gearPart.get(i),0);
+                    argsList.add(a);
+                }
+                args.putIntegerArrayList("gear",argsList);
+                gearDialog.setArguments(args);
+                gearDialog.show(getSupportFragmentManager(),null);
             }
         });
     }
