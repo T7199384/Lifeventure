@@ -30,6 +30,11 @@
         </activity>
 
         <receiver android:name=".Classes.AlertReceiver"/>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${mapsApiKey}" />
+
     </application>
 
 </manifest>

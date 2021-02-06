@@ -21,6 +21,7 @@ import com.example.lifeventure.Classes.AlertReceiver;
 import com.example.lifeventure.Classes.Task;
 import com.example.lifeventure.Classes.TaskAdapter;
 import com.example.lifeventure.Dialogs.CreateTaskDialog;
+import com.example.lifeventure.Dialogs.MapAddressDialog;
 import com.example.lifeventure.Dialogs.ScheduleTaskDialog;
 
 import java.util.ArrayList;
@@ -86,6 +87,14 @@ public class TaskActivity extends AppCompatActivity implements CreateTaskDialog.
             @Override
             public void onClick(View v) {
                 ScheTaskDialog();
+            }
+        });
+
+        Button mapTask = findViewById(R.id.addDestination);
+        mapTask.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MapTaskDialog();
             }
         });
 
@@ -158,6 +167,11 @@ public class TaskActivity extends AppCompatActivity implements CreateTaskDialog.
     public void ScheTaskDialog() {
         ScheduleTaskDialog scheTaskDialog = new ScheduleTaskDialog();
         scheTaskDialog.show(getSupportFragmentManager(),"Schedule Task");
+    }
+
+    public void MapTaskDialog() {
+        MapAddressDialog mapTaskDialog = new MapAddressDialog();
+        mapTaskDialog.show(getSupportFragmentManager(),"Map your journey");
     }
 
     @Override
