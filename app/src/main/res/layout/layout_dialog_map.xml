@@ -56,20 +56,48 @@
     </TableLayout>
 
     <TextView
-        android:id="@+id/mrTest"
+        android:id="@+id/addressShow"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="TextView" />
 
-    <androidx.recyclerview.widget.RecyclerView
+    <EditText
+        android:id="@+id/buildingInfo"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="Building info (optional)" />
 
-    </androidx.recyclerview.widget.RecyclerView>
+    <EditText
+        android:id="@+id/mapTask"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="Task" />
+
+    <SeekBar
+        android:id="@+id/difficultySlider"
+        android:layout_width="200dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:max="4"/>
+
+
+    <TextView
+        android:id="@+id/difficultyText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/difficulty_very_easy"
+        android:textAlignment="center" />
 
     <TableRow
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:layout_marginTop="12dp">
 
         <Button
             android:id="@+id/add"

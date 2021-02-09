@@ -10,6 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".FightScreenActivity"
+            android:label="@string/title_activity_fight_screen"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
             android:name=".ProfileActivity"
             android:label="@string/title_activity_profile" />
         <activity
@@ -29,12 +33,11 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".Classes.AlertReceiver"/>
+        <receiver android:name=".Classes.AlertReceiver" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="${mapsApiKey}" />
-
     </application>
 
 </manifest>

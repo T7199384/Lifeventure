@@ -5,6 +5,7 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.example.lifeventure.R;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.Date;
 

@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -27,13 +28,15 @@ import com.example.lifeventure.Dialogs.ScheduleTaskDialog;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class TaskActivity extends AppCompatActivity implements CreateTaskDialog.TaskCreateListener, ScheduleTaskDialog.TaskScheduleListener {
+public class TaskActivity extends AppCompatActivity implements CreateTaskDialog.TaskCreateListener, ScheduleTaskDialog.TaskScheduleListener, MapAddressDialog.TaskMapListener {
 
     private ArrayList<Task> checkList = new ArrayList<>();
 
     private RecyclerView mRecyclerView;
     private TaskAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+
+    public static final String GEOCACHE = null;
 
     private int lvl;
     private int exp;
@@ -189,6 +192,18 @@ public class TaskActivity extends AppCompatActivity implements CreateTaskDialog.
         insert(task);
         startAlarm(calendar, uName, uStrDate);
 
+    }
+
+    @Override
+    public void mapApply (String uName, String uAddress, int tDiffInt){
+        Task task = new Task(uName, uAddress, tDiffInt, false);
+        insert(task);
+
+        SharedPreferences sharedPreferences = getSharedPreferences(GEOCACHE, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(uName, uAddress);
+
+        editor.apply();
     }
 
     private void startAlarm(Calendar calendar, String taskName, String taskDate) {
