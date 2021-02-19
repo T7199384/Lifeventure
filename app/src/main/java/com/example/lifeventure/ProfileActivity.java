@@ -23,8 +23,8 @@ import java.util.Set;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    public static final String PROFILE = null;
-    public static final String GEAR = null;
+    public static final String PROFILE = "Profile";
+    public static final String GEAR = "Gear";
     public static final int PROFILE_LEVEL = 1;
     public static final int PROFILE_EXP = 0;
 

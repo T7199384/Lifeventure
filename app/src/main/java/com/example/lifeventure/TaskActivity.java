@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -36,15 +37,18 @@ public class TaskActivity extends AppCompatActivity implements CreateTaskDialog.
     private TaskAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
-    public static final String GEOCACHE = null;
+    public static final String TASKS = "Tasks";
+    public static final String GEOCACHE = "Geocache";
 
     private int lvl;
     private int exp;
     int currentLvl;
 
-    public static final String PROFILE = null;
+    public static final String PROFILE = "Profile";
     public static final int PROFILE_LEVEL = 1;
     public static final int PROFILE_EXP = 0;
+
+    public static final String TOKEN = "Token";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +105,9 @@ public class TaskActivity extends AppCompatActivity implements CreateTaskDialog.
             }
         });
 
+        /*TODO
+        Here is createList()
+         */
         createList();
         buildRecycler();
 
@@ -115,14 +122,16 @@ public class TaskActivity extends AppCompatActivity implements CreateTaskDialog.
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(new TaskAdapter.OnItemClickListener() {
+
             @Override
             public void onItemClick(int position) {
-                TextView hideTitle = findViewById(R.id.taskCardTitle);
-                TextView hideDesc = findViewById(R.id.taskCardDesc);
-                TextView hideExp = findViewById(R.id.taskCardExp);
-                TextView hideDate = findViewById(R.id.taskCardSche);
-                CheckBox hideCheck = findViewById(R.id.taskCardComplete);
-                checkList.get(position).showDesc(hideTitle,hideDesc,hideExp,hideDate,hideCheck);
+                String cardDesc = checkList.get(position).getTaskClassDesc();
+                AlertDialog.Builder descDialog = new AlertDialog.Builder(TaskActivity.this);
+                descDialog
+                        .setTitle("Description")
+                        .setMessage(cardDesc)
+                        .setNegativeButton("Close",null)
+                        .show();
             }
 
             @Override
@@ -143,12 +152,43 @@ public class TaskActivity extends AppCompatActivity implements CreateTaskDialog.
                 }
                 currentLvl=lvl;
                 editor.apply();
+
+                SharedPreferences tokens = getSharedPreferences(TOKEN,MODE_PRIVATE);
+                int tokenCount = tokens.getInt("tokenCount",0);
+                int fightTokens = tokens.getInt("fightTokens",0);
+                tokenCount=tokenCount+1;
+                if(tokenCount>=3){
+                    fightTokens = fightTokens+1;
+                    tokenCount=0;
+                    Toast.makeText(TaskActivity.this,"You obtain a fight token", Toast.LENGTH_SHORT).show();
+                }
+
+                SharedPreferences.Editor tokenEditor = tokens.edit();
+                tokenEditor.putInt("tokenCount", tokenCount);
+                tokenEditor.putInt("fightTokens", fightTokens);
+                tokenEditor.apply();
             }
         });
 
     }
 
-    public void createList() {
+    public void createList(){
+        checkList=new ArrayList<>();
+        SharedPreferences sharedPreferences = getSharedPreferences(TASKS, MODE_PRIVATE);
+        int total = sharedPreferences.getInt("taskNum",0);
+        for(int i = 0; i<total;i++){
+            String taskStr = sharedPreferences.getString(String.valueOf(i),"");
+            if(taskStr!="") {
+                String[] split = taskStr.split("¬");
+                if(split[3].equals("NA")){
+                checkList.add(new Task(split[0],split[1],Integer.parseInt(split[2]),false));}
+                else{
+                    checkList.add(new Task(split[0],split[1],Integer.parseInt(split[2]),false,split[3]));}}
+            }
+        }
+
+
+    public void createTestList() {
         checkList = new ArrayList<>();
         checkList.add(new Task("test title","test desc",0,false));
         checkList.add(new Task("test title","test desc",1,false));
@@ -181,9 +221,29 @@ public class TaskActivity extends AppCompatActivity implements CreateTaskDialog.
     public void apply(String uName, String uDesc, int tDiffInt) {
         Task task = new Task(uName, uDesc, tDiffInt, false);
         insert(task);
-        //Button createTask = findViewById(R.id.taskCreate);
-        //createTask.setText(task.getTaskClassTitle());
-;
+
+        /* TODO
+        *   Copy the MapApply SharedPrefs for tasks, use the same number as a primary key so that tasks are numbered and easier
+        *   to find during deletion . . .
+        *   Test task will mess with finding id as it won't be first, so either remove them or temporarily work around them*/
+
+
+        SharedPreferences sharedPreferences = getSharedPreferences(GEOCACHE, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        int amountOfAddresses = sharedPreferences.getInt("amountOfAddresses",0);
+        editor.putString(String.valueOf(amountOfAddresses), uDesc);
+        amountOfAddresses=amountOfAddresses+1;
+        editor.putInt("amountOfAddresses", amountOfAddresses);
+
+        SharedPreferences taskPref = getSharedPreferences(TASKS, MODE_PRIVATE);
+        SharedPreferences.Editor taskEditor = taskPref.edit();
+
+        int taskNum = taskPref.getInt("taskNum",0);
+        String taskStr = uName+"¬"+uDesc+"¬"+tDiffInt+"¬"+"NA";
+        taskEditor.putString(String.valueOf(taskNum),taskStr);
+        taskNum = taskNum+1;
+        taskEditor.putInt("taskNum", taskNum);
+        taskEditor.apply();
     }
 
     @Override
@@ -192,6 +252,15 @@ public class TaskActivity extends AppCompatActivity implements CreateTaskDialog.
         insert(task);
         startAlarm(calendar, uName, uStrDate);
 
+        SharedPreferences taskPref = getSharedPreferences(TASKS, MODE_PRIVATE);
+        SharedPreferences.Editor taskEditor = taskPref.edit();
+
+        int taskNum = taskPref.getInt("taskNum",0);
+        String taskStr = uName+"¬"+uDesc+"¬"+tDiffInt+"¬"+uStrDate;
+        taskEditor.putString(String.valueOf(taskNum),taskStr);
+        taskNum = taskNum+1;
+        taskEditor.putInt("taskNum", taskNum);
+        taskEditor.apply();
     }
 
     @Override
@@ -199,11 +268,36 @@ public class TaskActivity extends AppCompatActivity implements CreateTaskDialog.
         Task task = new Task(uName, uAddress, tDiffInt, false);
         insert(task);
 
-        SharedPreferences sharedPreferences = getSharedPreferences(GEOCACHE, MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(TASKS, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(uName, uAddress);
+        int amountOfAddresses = sharedPreferences.getInt("amountOfAddresses",0);
+        editor.putString(String.valueOf(amountOfAddresses), uAddress);
+        amountOfAddresses=amountOfAddresses+1;
+        editor.putInt("amountOfAddresses", amountOfAddresses);
 
         editor.apply();
+
+
+        SharedPreferences taskPref = getSharedPreferences(TASKS, MODE_PRIVATE);
+        SharedPreferences.Editor taskEditor = taskPref.edit();
+
+        int taskNum = taskPref.getInt("taskNum",0);
+        String taskStr = uName+"¬"+uAddress+"¬"+tDiffInt+"¬"+"NA";
+        taskEditor.putString(String.valueOf(taskNum),taskStr);
+        taskNum = taskNum+1;
+        taskEditor.putInt("taskNum", taskNum);
+        taskEditor.apply();
+
+        String alertMessage="";
+        for(int i = 0; i<sharedPreferences.getInt("amountOfAddresses",0);i++){
+            alertMessage=alertMessage+"Location "+i+": "+sharedPreferences.getString(String.valueOf(i),"Not Found")+"\n";
+        }
+
+        new AlertDialog.Builder(this)
+                .setTitle("Location Prefs")
+                .setMessage(alertMessage)
+                .setNegativeButton("Exit",null)
+                .show();
     }
 
     private void startAlarm(Calendar calendar, String taskName, String taskDate) {

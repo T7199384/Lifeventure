@@ -95,4 +95,5 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.viewHolder> {
     public int getItemCount() {
         return mList.size();
     }
+
 }

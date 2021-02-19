@@ -3,9 +3,12 @@ package com.example.lifeventure;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +18,9 @@ public class FightActivity extends AppCompatActivity {
     ImageButton monster1,monster2,monster3,monster4,monster5,monster6,monster7,monster8,monster9,
             monster10,monster11,monster12,monster13,monster14,monster15,monster16,monster17,monster18,monster19,
             monster20,monster21,monster22,monster23,monster24;
+
+    public static final String TOKEN = "Token";
+    TextView tokenShow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +51,10 @@ public class FightActivity extends AppCompatActivity {
         });
 
         setMonsterButtons();
+
+        tokenShow=findViewById(R.id.fightTokensText);
+        SharedPreferences tokens = getSharedPreferences(TOKEN, MODE_PRIVATE);
+        tokenShow.setText("Fight tokens= "+tokens.getInt("fightTokens",0));
 
     }
 

@@ -8,6 +8,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -16,11 +17,13 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatDialogFragment;
+import androidx.fragment.app.Fragment;
 
 import com.example.lifeventure.R;
 import com.example.lifeventure.TaskActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -51,8 +54,13 @@ public class MapAddressDialog extends AppCompatDialogFragment implements OnMapRe
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        view = inflater.inflate(R.layout.layout_dialog_map,null);
-
+        try {
+            view = inflater.inflate(R.layout.layout_dialog_map, null);
+        }
+        catch (InflateException e){
+            view=null;
+            view = inflater.inflate(R.layout.layout_dialog_map, null);
+        }
         builder.setView(view);
         builder.setTitle("Plan your journey");
 
@@ -195,5 +203,14 @@ public class MapAddressDialog extends AppCompatDialogFragment implements OnMapRe
 
     public interface TaskMapListener{
         void mapApply (String uName, String uAddress, int tDiffInt);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Fragment f = getFragmentManager().findFragmentById(R.id.map);
+        if (f != null){
+            getFragmentManager().beginTransaction().remove(f).commit();
+        }
     }
 }
