@@ -138,7 +138,35 @@ public class TaskActivity extends AppCompatActivity implements CreateTaskDialog.
             public void onCheck(int position) {
                 int addExp = (int) checkList.get(position).getTaskClassExp();
                 checkList.remove(position);
+
                 mAdapter.notifyItemRemoved(position);
+
+                SharedPreferences taskRefresh = getSharedPreferences(TASKS, MODE_PRIVATE);
+                SharedPreferences.Editor taskRefreshEditor = taskRefresh.edit();
+                for(int i = 0; i<taskRefresh.getInt("taskNum",0);i++){
+                    taskRefreshEditor.remove(String.valueOf(i));
+                }
+
+                int taskNum = 0;
+                String taskStr="";
+                for(int i = 0; i<checkList.size();i++){
+                    int diff= (int) (checkList.get(i).getTaskClassExp()/50);
+                    if(checkList.get(i).getTaskClassDate()==null) {
+                        taskStr = checkList.get(i).getTaskClassTitle() + "¬" + checkList.get(i).getTaskClassDesc() + "¬" + diff + "¬" + "NA";
+                        taskRefreshEditor.putString(String.valueOf(taskNum),taskStr);
+                    }
+                    else{
+                        taskStr = checkList.get(i).getTaskClassTitle() + "¬" + checkList.get(i).getTaskClassDesc() + "¬" + diff + "¬" + checkList.get(i).getTaskClassDate();
+                        taskRefreshEditor.putString(String.valueOf(taskNum),taskStr);
+                    }
+                    taskRefreshEditor.putString(String.valueOf(taskNum),taskStr);
+                    taskNum = taskNum+1;
+                }
+                taskRefreshEditor.putInt("taskNum", taskNum);
+                taskRefreshEditor.commit();
+
+
+
                 cancelAlarm();
                 SharedPreferences sharedPreferences = getSharedPreferences(PROFILE, MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -167,6 +195,7 @@ public class TaskActivity extends AppCompatActivity implements CreateTaskDialog.
                 tokenEditor.putInt("tokenCount", tokenCount);
                 tokenEditor.putInt("fightTokens", fightTokens);
                 tokenEditor.apply();
+
             }
         });
 
@@ -186,7 +215,6 @@ public class TaskActivity extends AppCompatActivity implements CreateTaskDialog.
                     checkList.add(new Task(split[0],split[1],Integer.parseInt(split[2]),false,split[3]));}}
             }
         }
-
 
     public void createTestList() {
         checkList = new ArrayList<>();
