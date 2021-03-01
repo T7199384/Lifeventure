@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 
+import com.google.android.gms.location.LocationRequest;
+
 public class SettingsActivity extends AppCompatActivity {
 
     @Override
@@ -37,5 +39,9 @@ public class SettingsActivity extends AppCompatActivity {
                 startActivity(new Intent(SettingsActivity.this, FightActivity.class));
             }
         });
+    }
+
+    public void SavePowerOption(){
+
     }
 }
