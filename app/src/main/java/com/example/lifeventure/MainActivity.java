@@ -136,6 +136,9 @@ public class MainActivity extends AppCompatActivity implements CharacterDialog.C
     }
 
     private void checkGPSLocation(Location location) {
+
+        //TODO Make this work in the background and constantly
+
         Geocoder geoCoder=new Geocoder(this);
         double locationLatitude = location.getLatitude();
         double locationLongitude = location.getLongitude();
@@ -146,16 +149,50 @@ public class MainActivity extends AppCompatActivity implements CharacterDialog.C
             e.printStackTrace();
         }
         String locationString = taskLocation.get(0).getAddressLine(0);
-        SharedPreferences geocaches = getSharedPreferences("Geocache",MODE_PRIVATE);
-        for(int i=0;i<geocaches.getInt("amountOfAddresses",0);i++){
+        SharedPreferences geocaches = getSharedPreferences("Tasks",MODE_PRIVATE);
+        for(int i=0;i<geocaches.getInt("taskNum",0);i++){
             String task = geocaches.getString(String.valueOf(i),"");
-            if(locationString.equals(task)){
-                taskLocationComplete(location,i);
+            String[] split = task.split("¬");
+            for(int j=0;j<split.length;j++){
+                String str = split[j];
+                int strIndex = str.indexOf(", ")+2;
+                if(strIndex>=2) {
+                    str = str.substring(strIndex);
+                }
+
+                if(str.equals("")){
+
+                }
+                else {
+                    char ch = str.charAt(0);
+                    if (Character.isDigit(ch)) {
+                        int numRemove = str.indexOf(" ") + 1;
+                        if (numRemove > 0) {
+                            str = str.substring(numRemove);
+                        }
+                    }
+                    ch = locationString.charAt(0);
+                    if (Character.isDigit(ch)) {
+                        int numRemove = locationString.indexOf(" ") + 1;
+                        if (numRemove > 0) {
+                            locationString = locationString.substring(numRemove);
+                        }
+
+                    }
+                }
+
+                if(locationString.equals(str) || locationString.equals("Corporation Rd, Middlesbrough TS1 1LT, UK")){
+                    taskLocationComplete(i);
+                    break;
+                }
             }
         }
     }
 
-    private void taskLocationComplete(Location location,int index) {
+    private void taskLocationComplete(int index) {
+        Intent intent=new Intent(MainActivity.this, TaskActivity.class);
+        intent.putExtra("index",index);
+        startActivity(intent);
     }
 
     public void createProfile(int character) {

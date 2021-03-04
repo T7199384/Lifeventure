@@ -111,6 +111,12 @@ public class TaskActivity extends AppCompatActivity implements CreateTaskDialog.
         createList();
         buildRecycler();
 
+        Intent intent = getIntent();
+        if(intent.hasExtra("index")){
+            int index = intent.getIntExtra("index",-1);
+            if(index!=-1){taskComplete(index);}
+        }
+
     }
 
     public void buildRecycler() {
@@ -136,69 +142,73 @@ public class TaskActivity extends AppCompatActivity implements CreateTaskDialog.
 
             @Override
             public void onCheck(int position) {
-                int addExp = (int) checkList.get(position).getTaskClassExp();
-                checkList.remove(position);
-
-                mAdapter.notifyItemRemoved(position);
-
-                SharedPreferences taskRefresh = getSharedPreferences(TASKS, MODE_PRIVATE);
-                SharedPreferences.Editor taskRefreshEditor = taskRefresh.edit();
-                for(int i = 0; i<taskRefresh.getInt("taskNum",0);i++){
-                    taskRefreshEditor.remove(String.valueOf(i));
-                }
-
-                int taskNum = 0;
-                String taskStr="";
-                for(int i = 0; i<checkList.size();i++){
-                    int diff= (int) (checkList.get(i).getTaskClassExp()/50);
-                    if(checkList.get(i).getTaskClassDate()==null) {
-                        taskStr = checkList.get(i).getTaskClassTitle() + "¬" + checkList.get(i).getTaskClassDesc() + "¬" + diff + "¬" + "NA";
-                        taskRefreshEditor.putString(String.valueOf(taskNum),taskStr);
-                    }
-                    else{
-                        taskStr = checkList.get(i).getTaskClassTitle() + "¬" + checkList.get(i).getTaskClassDesc() + "¬" + diff + "¬" + checkList.get(i).getTaskClassDate();
-                        taskRefreshEditor.putString(String.valueOf(taskNum),taskStr);
-                    }
-                    taskRefreshEditor.putString(String.valueOf(taskNum),taskStr);
-                    taskNum = taskNum+1;
-                }
-                taskRefreshEditor.putInt("taskNum", taskNum);
-                taskRefreshEditor.commit();
-
-
-
-                cancelAlarm();
-                SharedPreferences sharedPreferences = getSharedPreferences(PROFILE, MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                exp=exp+addExp;
-                editor.putInt(String.valueOf(PROFILE_EXP), (exp));
-                Toast.makeText(TaskActivity.this, String.valueOf(exp), Toast.LENGTH_SHORT).show();
-                lvl =(((exp)/1000)+1);
-                editor.putInt(String.valueOf(PROFILE_LEVEL),lvl);
-                if(lvl>currentLvl){
-                    Toast.makeText(TaskActivity.this,"Level Up", Toast.LENGTH_SHORT).show();
-                }
-                currentLvl=lvl;
-                editor.apply();
-
-                SharedPreferences tokens = getSharedPreferences(TOKEN,MODE_PRIVATE);
-                int tokenCount = tokens.getInt("tokenCount",0);
-                int fightTokens = tokens.getInt("fightTokens",0);
-                tokenCount=tokenCount+1;
-                if(tokenCount>=3){
-                    fightTokens = fightTokens+1;
-                    tokenCount=0;
-                    Toast.makeText(TaskActivity.this,"You obtain a fight token", Toast.LENGTH_SHORT).show();
-                }
-
-                SharedPreferences.Editor tokenEditor = tokens.edit();
-                tokenEditor.putInt("tokenCount", tokenCount);
-                tokenEditor.putInt("fightTokens", fightTokens);
-                tokenEditor.apply();
+                taskComplete(position);
 
             }
         });
 
+    }
+
+    public void taskComplete(int position){
+        int addExp = (int) checkList.get(position).getTaskClassExp();
+        checkList.remove(position);
+
+        mAdapter.notifyItemRemoved(position);
+
+        SharedPreferences taskRefresh = getSharedPreferences(TASKS, MODE_PRIVATE);
+        SharedPreferences.Editor taskRefreshEditor = taskRefresh.edit();
+        for(int i = 0; i<taskRefresh.getInt("taskNum",0);i++){
+            taskRefreshEditor.remove(String.valueOf(i));
+        }
+
+        int taskNum = 0;
+        String taskStr="";
+        for(int i = 0; i<checkList.size();i++){
+            int diff= (int) (checkList.get(i).getTaskClassExp()/50);
+            if(checkList.get(i).getTaskClassDate()==null) {
+                taskStr = checkList.get(i).getTaskClassTitle() + "¬" + checkList.get(i).getTaskClassDesc() + "¬" + diff + "¬" + "NA";
+                taskRefreshEditor.putString(String.valueOf(taskNum),taskStr);
+            }
+            else{
+                taskStr = checkList.get(i).getTaskClassTitle() + "¬" + checkList.get(i).getTaskClassDesc() + "¬" + diff + "¬" + checkList.get(i).getTaskClassDate();
+                taskRefreshEditor.putString(String.valueOf(taskNum),taskStr);
+            }
+            taskRefreshEditor.putString(String.valueOf(taskNum),taskStr);
+            taskNum = taskNum+1;
+        }
+        taskRefreshEditor.putInt("taskNum", taskNum);
+        taskRefreshEditor.commit();
+
+
+
+        cancelAlarm();
+        SharedPreferences sharedPreferences = getSharedPreferences(PROFILE, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        exp=exp+addExp;
+        editor.putInt(String.valueOf(PROFILE_EXP), (exp));
+        Toast.makeText(TaskActivity.this, String.valueOf(exp), Toast.LENGTH_SHORT).show();
+        lvl =(((exp)/1000)+1);
+        editor.putInt(String.valueOf(PROFILE_LEVEL),lvl);
+        if(lvl>currentLvl){
+            Toast.makeText(TaskActivity.this,"Level Up", Toast.LENGTH_SHORT).show();
+        }
+        currentLvl=lvl;
+        editor.apply();
+
+        SharedPreferences tokens = getSharedPreferences(TOKEN,MODE_PRIVATE);
+        int tokenCount = tokens.getInt("tokenCount",0);
+        int fightTokens = tokens.getInt("fightTokens",0);
+        tokenCount=tokenCount+1;
+        if(tokenCount>=3){
+            fightTokens = fightTokens+1;
+            tokenCount=0;
+            Toast.makeText(TaskActivity.this,"You obtain a fight token", Toast.LENGTH_SHORT).show();
+        }
+
+        SharedPreferences.Editor tokenEditor = tokens.edit();
+        tokenEditor.putInt("tokenCount", tokenCount);
+        tokenEditor.putInt("fightTokens", fightTokens);
+        tokenEditor.apply();
     }
 
     public void createList(){
@@ -209,10 +219,16 @@ public class TaskActivity extends AppCompatActivity implements CreateTaskDialog.
             String taskStr = sharedPreferences.getString(String.valueOf(i),"");
             if(taskStr!="") {
                 String[] split = taskStr.split("¬");
-                if(split[3].equals("NA")){
-                checkList.add(new Task(split[0],split[1],Integer.parseInt(split[2]),false));}
-                else{
-                    checkList.add(new Task(split[0],split[1],Integer.parseInt(split[2]),false,split[3]));}}
+                try {
+                    if (split[3].equals("NA")) {
+                        checkList.add(new Task(split[0], split[1], Integer.parseInt(split[2]), false));
+                    } else {
+                        checkList.add(new Task(split[0], split[1], Integer.parseInt(split[2]), false, split[3]));
+                    }
+                }
+                catch (ArrayIndexOutOfBoundsException e){
+                }
+            }
             }
         }
 
@@ -254,14 +270,6 @@ public class TaskActivity extends AppCompatActivity implements CreateTaskDialog.
         *   Copy the MapApply SharedPrefs for tasks, use the same number as a primary key so that tasks are numbered and easier
         *   to find during deletion . . .
         *   Test task will mess with finding id as it won't be first, so either remove them or temporarily work around them*/
-
-
-        SharedPreferences sharedPreferences = getSharedPreferences(GEOCACHE, MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        int amountOfAddresses = sharedPreferences.getInt("amountOfAddresses",0);
-        editor.putString(String.valueOf(amountOfAddresses), uDesc);
-        amountOfAddresses=amountOfAddresses+1;
-        editor.putInt("amountOfAddresses", amountOfAddresses);
 
         SharedPreferences taskPref = getSharedPreferences(TASKS, MODE_PRIVATE);
         SharedPreferences.Editor taskEditor = taskPref.edit();
