@@ -83,20 +83,19 @@ public class PrizeDialog extends AppCompatDialogFragment {
                 if(playerGear.getBoolean("weaponEquipped",false)==true) playerGearType=typeList[itemType];
                 break;
             case 6: playerGearStat=playerGear.getInt("brace",0);
-                if(playerGear.getBoolean("braceEquipped",false)==true) playerGearType=typeList[itemType]; break;
+                if(playerGear.getBoolean("braceEquipped",false)==true) playerGearType=typeList[itemType]; pStatTitle.setText("Defence");  break;
             case 5: playerGearStat=playerGear.getInt("ring",0);
-                if(playerGear.getBoolean("ringEquipped",false)==true) playerGearType=typeList[itemType]; break;
+                if(playerGear.getBoolean("ringEquipped",false)==true) playerGearType=typeList[itemType]; pStatTitle.setText("Defence");  break;
             case 4: playerGearStat=playerGear.getInt("neck",0);
-                if(playerGear.getBoolean("neckEquipped",false)==true) playerGearType=typeList[itemType]; break;
+                if(playerGear.getBoolean("neckEquipped",false)==true) playerGearType=typeList[itemType]; pStatTitle.setText("Defence");  break;
             case 3: playerGearStat=playerGear.getInt("foot",0);
-                if(playerGear.getBoolean("footEquipped",false)==true) playerGearType=typeList[itemType]; break;
+                if(playerGear.getBoolean("footEquipped",false)==true) playerGearType=typeList[itemType]; pStatTitle.setText("Defence");  break;
             case 2: playerGearStat=playerGear.getInt("leg",0);
-                if(playerGear.getBoolean("legEquipped",false)==true) playerGearType=typeList[itemType]; break;
+                if(playerGear.getBoolean("legEquipped",false)==true) playerGearType=typeList[itemType]; pStatTitle.setText("Defence");  break;
             case 1: playerGearStat=playerGear.getInt("body",0);
-            if(playerGear.getBoolean("bodyEquipped",false)==true) playerGearType=typeList[itemType]; break;
+            if(playerGear.getBoolean("bodyEquipped",false)==true) playerGearType=typeList[itemType]; pStatTitle.setText("Defence");  break;
             case 0: playerGearStat=playerGear.getInt("head",0);
-                if(playerGear.getBoolean("headEquipped",false)==true) playerGearType=typeList[itemType]; break;
-            default: pStatTitle.setText("Defence");
+                if(playerGear.getBoolean("headEquipped",false)==true) playerGearType=typeList[itemType]; pStatTitle.setText("Defence"); break;
         }
 
         if(playerGearType==null) { playerGearType="Rags"; playerGearStat=0;}
