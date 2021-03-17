@@ -34,12 +34,12 @@
                 android:layout_height="match_parent">
 
                 <Button
-                    android:id="@+id/button3"
+                    android:id="@+id/recordButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:layout_marginBottom="10dp"
-                    android:text="Button" />
+                    android:text="Record" />
 
                 <Button
                     android:id="@+id/lvlButton"
@@ -77,12 +77,12 @@
                     android:text="Gear" />
 
                 <Button
-                    android:id="@+id/button2"
+                    android:id="@+id/statButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:layout_marginStart="10dp"
-                    android:text="Button" />
+                    android:text="Stats" />
 
                 <Button
                     android:id="@+id/button6"

@@ -9,6 +9,7 @@ import android.view.Display;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,11 @@ public class FightActivity extends AppCompatActivity {
 
     public static final String TOKEN = "Token";
     TextView tokenShow;
+    int playerLevel;
+
+    public static final String PROFILE = "Profile";
+    public static final int PROFILE_LEVEL = 1;
+    private int tokensTotal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,9 +58,13 @@ public class FightActivity extends AppCompatActivity {
 
         setMonsterButtons();
 
+        SharedPreferences sharedPreferences = getSharedPreferences(PROFILE, MODE_PRIVATE);
+        playerLevel = sharedPreferences.getInt(String.valueOf(PROFILE_LEVEL),1);
+
         tokenShow=findViewById(R.id.fightTokensText);
         SharedPreferences tokens = getSharedPreferences(TOKEN, MODE_PRIVATE);
-        tokenShow.setText("Fight tokens= "+tokens.getInt("fightTokens",0));
+        tokensTotal = tokens.getInt("fightTokens",0);
+        tokenShow.setText("Fight tokens= "+tokensTotal);
 
     }
 
@@ -87,43 +97,80 @@ public class FightActivity extends AppCompatActivity {
         monster1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(tokenCheck()==false){
+                    Toast.makeText(FightActivity.this,"You have no tokens to fight with", Toast.LENGTH_SHORT).show();
+                }
+                else{
                 Intent intent = new Intent(FightActivity.this, FightScreenActivity.class);
                 intent.putExtra("Value",1);
-                startActivity(intent);
+                startActivity(intent); }
             }
         });
         monster2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(tokenCheck()==false){
+                    Toast.makeText(FightActivity.this,"You have no tokens to fight with", Toast.LENGTH_SHORT).show();
+                }
+                else{
                 Intent intent = new Intent(FightActivity.this, FightScreenActivity.class);
                 intent.putExtra("Value",2);
-                startActivity(intent);
+                startActivity(intent); }
             }
         });
         monster3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(tokenCheck()==false){
+                    Toast.makeText(FightActivity.this,"You have no tokens to fight with", Toast.LENGTH_SHORT).show();
+                }
+                else{
                 Intent intent = new Intent(FightActivity.this, FightScreenActivity.class);
                 intent.putExtra("Value",3);
-                startActivity(intent);
+                startActivity(intent); }
             }
         });
+
+
         monster4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(tokenCheck()==false){
+                    Toast.makeText(FightActivity.this,"You have no tokens to fight with", Toast.LENGTH_SHORT).show();
+                }
+                else if (playerLevel<=2){
+                    Toast.makeText(FightActivity.this,"You are not strong enough yet", Toast.LENGTH_SHORT).show();
+                }
+                else{
                 Intent intent = new Intent(FightActivity.this, FightScreenActivity.class);
                 intent.putExtra("Value",4);
-                startActivity(intent);
+                startActivity(intent); }
             }
         });
         monster5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /*
+                if(tokenCheck()==false){
+                    Toast.makeText(FightActivity.this,"You have no tokens to fight with", Toast.LENGTH_SHORT).show();
+                }
+                else if (playerLevel<=3){
+                    Toast.makeText(FightActivity.this,"You are not strong enough yet", Toast.LENGTH_SHORT).show();
+                }
+                else{
                 Intent intent = new Intent(FightActivity.this, FightScreenActivity.class);
                 intent.putExtra("Value",5);
-                startActivity(intent);
+                startActivity(intent); }
+
+                 */
+                Toast.makeText(FightActivity.this,"Token added", Toast.LENGTH_SHORT).show();
+                tokensTotal = tokensTotal+1;
+                tokenShow.setText("Fight tokens= "+tokensTotal);
             }
         });
+
+        //Locked out for alpha
+        /*
         monster6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -247,35 +294,62 @@ public class FightActivity extends AppCompatActivity {
         monster21.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(tokenCheck()==false){
+                    Toast.makeText(FightActivity.this,"You have no tokens to fight with", Toast.LENGTH_SHORT).show();
+                }
+                else{
                 Intent intent = new Intent(FightActivity.this, FightScreenActivity.class);
                 intent.putExtra("Value",21);
-                startActivity(intent);
+                startActivity(intent); }
             }
         });
         monster22.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(tokenCheck()==false){
+                    Toast.makeText(FightActivity.this,"You have no tokens to fight with", Toast.LENGTH_SHORT).show();
+                }
+                else{
                 Intent intent = new Intent(FightActivity.this, FightScreenActivity.class);
                 intent.putExtra("Value",22);
-                startActivity(intent);
+                startActivity(intent); }
             }
         });
         monster23.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(tokenCheck()==false){
+                    Toast.makeText(FightActivity.this,"You have no tokens to fight with", Toast.LENGTH_SHORT).show();
+                }
+                else{
                 Intent intent = new Intent(FightActivity.this, FightScreenActivity.class);
                 intent.putExtra("Value",23);
-                startActivity(intent);
+                startActivity(intent); }
             }
         });
         monster24.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(tokenCheck()==false){
+                    Toast.makeText(FightActivity.this,"You have no tokens to fight with", Toast.LENGTH_SHORT).show();
+                }
+                else{
                 Intent intent = new Intent(FightActivity.this, FightScreenActivity.class);
                 intent.putExtra("Value",24);
-                startActivity(intent);
+                startActivity(intent); }
             }
         });
 
+         */
+
+    }
+
+    public Boolean tokenCheck(){
+        if(tokensTotal>0){
+            return true;
+        }
+        else return false;
     }
 }
+
+
