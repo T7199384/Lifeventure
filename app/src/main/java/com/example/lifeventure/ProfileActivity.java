@@ -166,5 +166,43 @@ public class ProfileActivity extends AppCompatActivity {
                         .show();
             }
         });
+
+        Button stats = findViewById(R.id.statButton);
+        stats.setOnClickListener(new View.OnClickListener() {
+
+            SharedPreferences statPrefs = getSharedPreferences("Stats", MODE_PRIVATE);
+
+            @Override
+            public void onClick(View v) {
+                new AlertDialog.Builder(ProfileActivity.this)
+                        .setTitle("Stats")
+                        .setMessage("Strength :     "+statPrefs.getInt("Strength",0)+"\n"+
+                                "Magic :          "+statPrefs.getInt("Magic",0)+"\n"+
+                                "Health :     "+statPrefs.getInt("Health",100)+"\n"+
+                                "Defence :     "+statPrefs.getInt("Defence",0)+"\n")
+                        .show();
+            }
+        });
+
+
+        final Button records = findViewById(R.id.recordButton);
+        records.setOnClickListener(new View.OnClickListener() {
+
+            SharedPreferences recordsPrefs = getSharedPreferences("Records",MODE_PRIVATE);
+
+            @Override
+            public void onClick(View v) {
+                new AlertDialog.Builder(ProfileActivity.this)
+                        .setTitle("Records")
+                        .setMessage(
+                                "Tasks complete: "+recordsPrefs.getInt("TasksComplete",0)+"\n"+
+                                "Battles taken: "+recordsPrefs.getInt("BattlesTaken",0)+"\n"+
+                                "Battles won: "+recordsPrefs.getInt("BattlesWon",0)+"\n"+
+                                "Battles lost: "+recordsPrefs.getInt("BattlesLost",0)
+                                )
+                        .show();
+            }
+        });
     }
 }
+

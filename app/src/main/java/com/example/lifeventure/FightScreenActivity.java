@@ -77,8 +77,8 @@ public class FightScreenActivity extends AppCompatActivity {
         monsterStats=monsterMap.get(monsterNames[monsterId]);
         playerHealthText=findViewById(R.id.playerHealth);
 
-        SharedPreferences stats = getSharedPreferences("stats",MODE_PRIVATE);
-        maxHealth = 100 + (10 * (stats.getInt("defense",1)-1));
+        SharedPreferences stats = getSharedPreferences("Stats",MODE_PRIVATE);
+        maxHealth =stats.getInt("Health",100);
         pHealth=maxHealth;
         playerHealthText.setText(pHealth+"/"+maxHealth);
 
@@ -141,6 +141,12 @@ public class FightScreenActivity extends AppCompatActivity {
         escape.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SharedPreferences recordsPrefs = getSharedPreferences("Records",MODE_PRIVATE);
+                int recordLost = recordsPrefs.getInt("BattlesLost",0);
+                recordLost=recordLost+1;
+                SharedPreferences.Editor rEdit = recordsPrefs.edit();
+                rEdit.putInt("BattlesLost",recordLost);
+                rEdit.apply();
                 playerRun="You escape from the "+monsterNames[monsterId]+"!";
                 messageShow(playerRun);
                 startActivity(new Intent(FightScreenActivity.this, FightActivity.class));
@@ -187,13 +193,13 @@ public class FightScreenActivity extends AppCompatActivity {
                 })
                 .show();
     }
-    //TODO This you fool
+
     public void SpellSelection(int which){
-        SharedPreferences stats = getSharedPreferences("stats", MODE_PRIVATE);
+        SharedPreferences stats = getSharedPreferences("Stats", MODE_PRIVATE);
         int castingPower = stats.getInt("casting",1);
 
         SharedPreferences playerGear = getSharedPreferences("weapon",MODE_PRIVATE);
-        int magic=playerGear.getInt("magic",0);
+        int magic=playerGear.getInt("Magic",0);
 
         int potency = magic+castingPower;
         skip = false;
@@ -287,15 +293,16 @@ public class FightScreenActivity extends AppCompatActivity {
     public void PlayerHit(){
         buttonTrap(false);
 
-        SharedPreferences playerStats = getSharedPreferences("stats",MODE_PRIVATE);
+        SharedPreferences playerStats = getSharedPreferences("Stats",MODE_PRIVATE);
         SharedPreferences playerGear = getSharedPreferences(GEAR,MODE_PRIVATE);
-        int strength=playerStats.getInt("strength",10);
+        int strength=playerStats.getInt("Strength",10);
         int weapon=playerGear.getInt("attack",0);
 
         int random=new Random().nextInt(2)+2;
 
+        if(strength+weapon==0){dmg=random*monsterStats[1];}
+        else {dmg=((strength+weapon)+1)/(random*monsterStats[1]);}
 
-        dmg=(strength+weapon)/(random*monsterStats[1])+10000/*TODO remove this after test*/;
         eHealth=eHealth-dmg;
         progressMarker=eHealth*healthMultiplier;
         enemyHP.setProgress(progressMarker);
@@ -345,7 +352,12 @@ public class FightScreenActivity extends AppCompatActivity {
         int monsterStr=monsterStats[0];
         int random=new Random().nextInt(2)+2;
 
-        dmg=monsterStr*random/defence;
+
+        SharedPreferences stats = getSharedPreferences("stats",MODE_PRIVATE);
+        dmg=monsterStr*(random/defence)-(stats.getInt("Defence",0));
+
+        if(dmg<0) dmg=0;
+
         pHealth=pHealth-dmg;
 
         playerHealthText.setText(String.valueOf(pHealth)+"/"+String.valueOf(maxHealth));
@@ -378,17 +390,25 @@ public class FightScreenActivity extends AppCompatActivity {
 
     private void Dead(Boolean monsterDead) {
         if(monsterDead==true){
+            SharedPreferences recordsPrefs = getSharedPreferences("Records",MODE_PRIVATE);
+            int recordWin = recordsPrefs.getInt("BattlesWon",0);
+            recordWin=recordWin+1;
+            SharedPreferences.Editor rEdit = recordsPrefs.edit();
+            rEdit.putInt("BattlesWon",recordWin);
+            rEdit.apply();
+
             monsterDeath="The "+monsterNames[monsterId]+" is dead!";
             messageShow(monsterDeath);
             prize(monsterId);
-/*            handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                }
-            }, 4000);*/
         }
         else{
+            SharedPreferences recordsPrefs = getSharedPreferences("Records",MODE_PRIVATE);
+            int recordLost = recordsPrefs.getInt("BattlesLost",0);
+            recordLost=recordLost+1;
+            SharedPreferences.Editor rEdit = recordsPrefs.edit();
+            rEdit.putInt("BattlesLost",recordLost);
+            rEdit.apply();
+
             playerDeath="The "+monsterNames[monsterId]+" has defeated you!";
             messageShow(playerDeath);
             handler = new Handler();

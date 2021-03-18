@@ -23,6 +23,7 @@ import com.example.lifeventure.Classes.AlertReceiver;
 import com.example.lifeventure.Classes.Task;
 import com.example.lifeventure.Classes.TaskAdapter;
 import com.example.lifeventure.Dialogs.CreateTaskDialog;
+import com.example.lifeventure.Dialogs.LevelUpDialog;
 import com.example.lifeventure.Dialogs.MapAddressDialog;
 import com.example.lifeventure.Dialogs.ScheduleTaskDialog;
 
@@ -105,9 +106,6 @@ public class TaskActivity extends AppCompatActivity implements CreateTaskDialog.
             }
         });
 
-        /*TODO
-        Here is createList()
-         */
         createList();
         buildRecycler();
 
@@ -150,6 +148,14 @@ public class TaskActivity extends AppCompatActivity implements CreateTaskDialog.
     }
 
     public void taskComplete(int position){
+
+        SharedPreferences recordsPrefs = getSharedPreferences("Records",MODE_PRIVATE);
+        int recordTask = recordsPrefs.getInt("TasksComplete",0);
+        recordTask=recordTask+1;
+        SharedPreferences.Editor rEdit = recordsPrefs.edit();
+        rEdit.putInt("TasksComplete",recordTask);
+        rEdit.apply();
+
         int addExp = (int) checkList.get(position).getTaskClassExp();
         checkList.remove(position);
 
@@ -190,10 +196,11 @@ public class TaskActivity extends AppCompatActivity implements CreateTaskDialog.
         lvl =(((exp)/1000)+1);
         editor.putInt(String.valueOf(PROFILE_LEVEL),lvl);
         if(lvl>currentLvl){
-            Toast.makeText(TaskActivity.this,"Level Up", Toast.LENGTH_SHORT).show();
+            currentLvl=lvl;
+            editor.apply();
+            LevelUpDialog levelUpDialog = new LevelUpDialog();
+            levelUpDialog.show(getSupportFragmentManager(),"Level up");
         }
-        currentLvl=lvl;
-        editor.apply();
 
         SharedPreferences tokens = getSharedPreferences(TOKEN,MODE_PRIVATE);
         int tokenCount = tokens.getInt("tokenCount",0);
@@ -265,11 +272,6 @@ public class TaskActivity extends AppCompatActivity implements CreateTaskDialog.
     public void apply(String uName, String uDesc, int tDiffInt) {
         Task task = new Task(uName, uDesc, tDiffInt, false);
         insert(task);
-
-        /* TODO
-        *   Copy the MapApply SharedPrefs for tasks, use the same number as a primary key so that tasks are numbered and easier
-        *   to find during deletion . . .
-        *   Test task will mess with finding id as it won't be first, so either remove them or temporarily work around them*/
 
         SharedPreferences taskPref = getSharedPreferences(TASKS, MODE_PRIVATE);
         SharedPreferences.Editor taskEditor = taskPref.edit();

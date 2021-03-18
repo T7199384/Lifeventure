@@ -70,6 +70,7 @@ public class FightActivity extends AppCompatActivity {
 
     private void setMonsterButtons(){
         monster1=findViewById(R.id.monster1);
+        monster1.setImageResource(R.drawable.pixie1);
         monster2=findViewById(R.id.monster2);
         monster3=findViewById(R.id.monster3);
         monster4=findViewById(R.id.monster4);
@@ -101,9 +102,10 @@ public class FightActivity extends AppCompatActivity {
                     Toast.makeText(FightActivity.this,"You have no tokens to fight with", Toast.LENGTH_SHORT).show();
                 }
                 else{
-                Intent intent = new Intent(FightActivity.this, FightScreenActivity.class);
-                intent.putExtra("Value",1);
-                startActivity(intent); }
+                    battleRecord();
+                    Intent intent = new Intent(FightActivity.this, FightScreenActivity.class);
+                    intent.putExtra("Value",1);
+                    startActivity(intent); }
             }
         });
         monster2.setOnClickListener(new View.OnClickListener() {
@@ -113,9 +115,10 @@ public class FightActivity extends AppCompatActivity {
                     Toast.makeText(FightActivity.this,"You have no tokens to fight with", Toast.LENGTH_SHORT).show();
                 }
                 else{
-                Intent intent = new Intent(FightActivity.this, FightScreenActivity.class);
-                intent.putExtra("Value",2);
-                startActivity(intent); }
+                    battleRecord();
+                    Intent intent = new Intent(FightActivity.this, FightScreenActivity.class);
+                    intent.putExtra("Value",2);
+                    startActivity(intent); }
             }
         });
         monster3.setOnClickListener(new View.OnClickListener() {
@@ -125,9 +128,10 @@ public class FightActivity extends AppCompatActivity {
                     Toast.makeText(FightActivity.this,"You have no tokens to fight with", Toast.LENGTH_SHORT).show();
                 }
                 else{
-                Intent intent = new Intent(FightActivity.this, FightScreenActivity.class);
-                intent.putExtra("Value",3);
-                startActivity(intent); }
+                    battleRecord();
+                    Intent intent = new Intent(FightActivity.this, FightScreenActivity.class);
+                    intent.putExtra("Value",3);
+                    startActivity(intent); }
             }
         });
 
@@ -142,9 +146,10 @@ public class FightActivity extends AppCompatActivity {
                     Toast.makeText(FightActivity.this,"You are not strong enough yet", Toast.LENGTH_SHORT).show();
                 }
                 else{
-                Intent intent = new Intent(FightActivity.this, FightScreenActivity.class);
-                intent.putExtra("Value",4);
-                startActivity(intent); }
+                    battleRecord();
+                    Intent intent = new Intent(FightActivity.this, FightScreenActivity.class);
+                    intent.putExtra("Value",4);
+                    startActivity(intent); }
             }
         });
         monster5.setOnClickListener(new View.OnClickListener() {
@@ -349,6 +354,15 @@ public class FightActivity extends AppCompatActivity {
             return true;
         }
         else return false;
+    }
+
+    public void battleRecord(){
+        SharedPreferences recordsPrefs = getSharedPreferences("Records",MODE_PRIVATE);
+        int battlesTaken = recordsPrefs.getInt("BattlesTaken",0);
+        battlesTaken=battlesTaken+1;
+        SharedPreferences.Editor rEdit = recordsPrefs.edit();
+        rEdit.putInt("BattlesTaken",battlesTaken);
+        rEdit.apply();
     }
 }
 
