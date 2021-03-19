@@ -201,6 +201,9 @@ public class TaskActivity extends AppCompatActivity implements CreateTaskDialog.
             LevelUpDialog levelUpDialog = new LevelUpDialog();
             levelUpDialog.show(getSupportFragmentManager(),"Level up");
         }
+        else {
+            editor.apply();
+        }
 
         SharedPreferences tokens = getSharedPreferences(TOKEN,MODE_PRIVATE);
         int tokenCount = tokens.getInt("tokenCount",0);

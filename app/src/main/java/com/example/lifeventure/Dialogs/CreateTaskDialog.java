@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatDialogFragment;
 
@@ -77,10 +78,13 @@ public class CreateTaskDialog extends AppCompatDialogFragment{
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(tName.getText().toString().equals("")){tName.setError("This field cannot be empty"); }
+                else if(tDesc.getText().toString().equals("")) {tDesc.setError("This field cannot be empty"); }
+                else {
                 String uName = tName.getText().toString();
                 String uDesc = tDesc.getText().toString();
                 listener.apply(uName, uDesc,tDiffInt);
-                dismiss();
+                dismiss();}
             }
         });
 

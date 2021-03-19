@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.Display;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -71,8 +72,13 @@ public class FightActivity extends AppCompatActivity {
     private void setMonsterButtons(){
         monster1=findViewById(R.id.monster1);
         monster1.setImageResource(R.drawable.pixie1);
+        monster1.setScaleType(ImageView.ScaleType.FIT_XY);
         monster2=findViewById(R.id.monster2);
+        monster2.setImageResource(R.drawable.goblin2);
+        monster2.setScaleType(ImageView.ScaleType.FIT_XY);
         monster3=findViewById(R.id.monster3);
+        monster3.setImageResource(R.drawable.ogre3);
+        monster3.setScaleType(ImageView.ScaleType.FIT_XY);
         monster4=findViewById(R.id.monster4);
         monster5=findViewById(R.id.monster5);
         monster6=findViewById(R.id.monster6);

@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.fragment.app.Fragment;
@@ -120,11 +121,15 @@ public class MapAddressDialog extends AppCompatDialogFragment implements OnMapRe
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(tName.getText().toString().equals("")){tName.setError("This field cannot be empty"); }
+                else if(tBuildingInfo.getText().toString().equals("")) {tBuildingInfo.setError("This field cannot be empty"); }
+                else {
                 String uName = tName.getText().toString();
-                String uAddress = editLocate.getText().toString()+", "+addressList.get(0).getAddressLine(0);
-                listener.mapApply(uName, uAddress ,tDiffInt);
+                    String uAddress = editLocate.getText().toString() + ", " + addressList.get(0).getAddressLine(0);
+                    listener.mapApply(uName, uAddress, tDiffInt);
 
-                dismiss();
+                    dismiss();
+                }
             }
         });
 

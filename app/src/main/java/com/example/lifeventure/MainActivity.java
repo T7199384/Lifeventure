@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements CharacterDialog.C
     private int lvl;
     private int exp;
 
-    public static final String PROFILE = null;
+    public static final String PROFILE = "Profile";
     public static final int PROFILE_GENDER = 2;
     public static final int PROFILE_LEVEL = 1;
     public static final int PROFILE_EXP = 0;

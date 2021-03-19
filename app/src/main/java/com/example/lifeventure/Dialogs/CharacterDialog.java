@@ -3,6 +3,7 @@ package com.example.lifeventure.Dialogs;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +17,6 @@ public class CharacterDialog extends AppCompatDialogFragment {
     private Button male,female;
     private int character;
     private CharacterListener listener;
-
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -35,6 +35,7 @@ public class CharacterDialog extends AppCompatDialogFragment {
                 dismiss();
             }
         });
+
         female = view.findViewById(R.id.female);
         female.setOnClickListener(new View.OnClickListener() {
             @Override

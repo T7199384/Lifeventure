@@ -8,10 +8,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.Image;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.example.lifeventure.Dialogs.GearDialog;
@@ -32,10 +34,12 @@ public class ProfileActivity extends AppCompatActivity {
     public static final String GEAR = "Gear";
     public static final int PROFILE_LEVEL = 1;
     public static final int PROFILE_EXP = 0;
+    private static final int PROFILE_GENDER = 2;
 
     private int lvl;
     private int exp;
     private ArrayList<String> gearPart;
+    private int character;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +71,16 @@ public class ProfileActivity extends AppCompatActivity {
 
         SharedPreferences profile = getSharedPreferences(PROFILE,MODE_PRIVATE);
         lvl=profile.getInt(String.valueOf(PROFILE_LEVEL),1);
-        exp=profile.getInt(String.valueOf(PROFILE_EXP),1);
+        exp=profile.getInt(String.valueOf(PROFILE_EXP),0);
+        character=profile.getInt(String.valueOf(PROFILE_GENDER),1);
+
+        ImageView profileImg = findViewById(R.id.profileImg);
+
+        switch (character){
+            case 0: profileImg.setImageResource(R.drawable.maleprofile); break;
+            case 1: profileImg.setImageResource(R.drawable.femaleprofile); break;
+
+        }
 
         gearPart = new ArrayList<>(7);
         gearPart.add(0,"head");gearPart.add(1,"body");

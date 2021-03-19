@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatDialogFragment;
 
@@ -39,18 +40,7 @@ public class ScheduleTaskDialog extends AppCompatDialogFragment{
 
         builder.setView(view);
         builder.setTitle("Schedule Task");
- /*       builder.setPositiveButton("Create", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
 
-            }
-        });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        });*/
 
         tName=view.findViewById(R.id.taskCreateName);
         tDesc=view.findViewById(R.id.taskCreateDesc);
@@ -87,20 +77,23 @@ public class ScheduleTaskDialog extends AppCompatDialogFragment{
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String uName = tName.getText().toString();
-                String uDesc = tDesc.getText().toString();
-                String uStrDate = datePicker.getDayOfMonth()+"."+datePicker.getMonth()+"."+datePicker.getYear()+"\r"+timePicker.getHour()+":"+timePicker.getMinute();
-                //Date uDate = datePicker.getFirstDayOfWeek()+datePicker.getDayOfMonth()+datePicker.getYear();
-                Calendar calendar = Calendar.getInstance();
-                calendar.set(Calendar.HOUR_OF_DAY, timePicker.getHour());
-                calendar.set(Calendar.MINUTE, timePicker.getMinute());
-                calendar.set(Calendar.SECOND,0);
-                calendar.set(Calendar.YEAR, datePicker.getYear());
-                calendar.set(Calendar.MONTH, datePicker.getMonth());
-                calendar.set(Calendar.DAY_OF_MONTH, datePicker.getDayOfMonth());
+                if(tName.getText().toString().equals("")){tName.setError("This field cannot be empty"); }
+                else if(tDesc.getText().toString().equals("")) {tDesc.setError("This field cannot be empty"); }
+                else {
+                    String uName = tName.getText().toString();
+                    String uDesc = tDesc.getText().toString();
+                    String uStrDate = datePicker.getDayOfMonth() + "." + datePicker.getMonth() + "." + datePicker.getYear() + "\r" + timePicker.getHour() + ":" + timePicker.getMinute();
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.set(Calendar.HOUR_OF_DAY, timePicker.getHour());
+                    calendar.set(Calendar.MINUTE, timePicker.getMinute());
+                    calendar.set(Calendar.SECOND, 0);
+                    calendar.set(Calendar.YEAR, datePicker.getYear());
+                    calendar.set(Calendar.MONTH, datePicker.getMonth());
+                    calendar.set(Calendar.DAY_OF_MONTH, datePicker.getDayOfMonth());
 
-                listener.scheApply(uName, uDesc,tDiffInt, uStrDate, calendar);
-                dismiss();
+                    listener.scheApply(uName, uDesc, tDiffInt, uStrDate, calendar);
+                    dismiss();
+                }
             }
         });
 

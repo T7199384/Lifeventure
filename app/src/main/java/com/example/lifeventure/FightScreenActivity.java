@@ -39,7 +39,7 @@ public class FightScreenActivity extends AppCompatActivity {
 
     Handler handler;
 
-    String[] monsterNames={"Pixie","Ogre","Goblin"};
+    String[] monsterNames={"Pixie","Goblin","Ogre"};
     ArrayList<String> spellsList;
 
     String[] playerSpells;
@@ -47,8 +47,8 @@ public class FightScreenActivity extends AppCompatActivity {
     int[] monsterStats;
 
     int dmg;
-    int healthMultiplier;
-    int progressMarker=100;
+    double healthMultiplier;
+    double progressMarker=100;
     int eHealth;
 
     int pHealth;
@@ -83,14 +83,23 @@ public class FightScreenActivity extends AppCompatActivity {
         playerHealthText.setText(pHealth+"/"+maxHealth);
 
         monsterImg=findViewById(R.id.monsterImage);
-        monsterImg.setImageResource(R.drawable.pixie1);
 
         spellsList=new ArrayList<String>();
 
         enemyHP=findViewById(R.id.enemyHp);
         switch (monsterId){
             case 0:
-                eHealth=50; healthMultiplier=2; enemyHP.setProgress(100);break;
+                eHealth=50; healthMultiplier=2; enemyHP.setProgress(100);
+                monsterImg.setImageResource(R.drawable.pixie1);
+                break;
+            case 1:
+                eHealth=100; healthMultiplier=1; enemyHP.setProgress(100);
+                monsterImg.setImageResource(R.drawable.goblin2);
+                break;
+            case 2:
+                eHealth=200; healthMultiplier=0.5; enemyHP.setProgress(100);
+                monsterImg.setImageResource(R.drawable.ogre3);
+                break;
         }
 
         SharedPreferences playerLevel = getSharedPreferences("profile",MODE_PRIVATE);
@@ -216,7 +225,7 @@ public class FightScreenActivity extends AppCompatActivity {
                 dmg = (new Random().nextInt(3)+1)*potency;
                 eHealth=eHealth-dmg;
                 progressMarker=eHealth*healthMultiplier;
-                enemyHP.setProgress(progressMarker);
+                enemyHP.setProgress((int) Math.round(progressMarker));
 
                 playerCast = "You set the "+monsterNames[monsterId]+" alight for "+dmg+"!";
                 messageShow(playerCast);
@@ -305,7 +314,7 @@ public class FightScreenActivity extends AppCompatActivity {
 
         eHealth=eHealth-dmg;
         progressMarker=eHealth*healthMultiplier;
-        enemyHP.setProgress(progressMarker);
+        enemyHP.setProgress((int) Math.round(progressMarker));
 
         playerAttack = "You hit for "+dmg+" to the "+monsterNames[monsterId]+"!";
         messageShow(playerAttack);
@@ -430,6 +439,8 @@ public class FightScreenActivity extends AppCompatActivity {
 
     private void MapCreate() {
         monsterMap.put("Pixie", new int[]{1, 1, 1, 1});
+        monsterMap.put("Goblin", new int[]{2,1,2,2});
+        monsterMap.put("Ogre", new int[]{3,1,5,2});
     }
 
     private void buttonTrap(Boolean on){
