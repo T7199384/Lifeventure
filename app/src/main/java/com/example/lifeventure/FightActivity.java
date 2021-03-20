@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.lifeventure.Classes.GPSChecker;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +35,8 @@ public class FightActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fight);
+
+        setTitle("Choose a Monster");
 
         final ImageButton tasks= findViewById(R.id.taskButton);
         final ImageButton profile= findViewById(R.id.profileButton);
@@ -369,6 +373,19 @@ public class FightActivity extends AppCompatActivity {
         SharedPreferences.Editor rEdit = recordsPrefs.edit();
         rEdit.putInt("BattlesTaken",battlesTaken);
         rEdit.apply();
+    }
+
+    @Override
+    public void onBackPressed(){
+        startActivity(new Intent(this, MainActivity.class));
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+
+        GPSChecker gpsChecker = new GPSChecker();
+        gpsChecker.create(this, this);
     }
 }
 

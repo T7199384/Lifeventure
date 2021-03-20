@@ -122,7 +122,6 @@ public class MapAddressDialog extends AppCompatDialogFragment implements OnMapRe
             @Override
             public void onClick(View v) {
                 if(tName.getText().toString().equals("")){tName.setError("This field cannot be empty"); }
-                else if(tBuildingInfo.getText().toString().equals("")) {tBuildingInfo.setError("This field cannot be empty"); }
                 else {
                 String uName = tName.getText().toString();
                     String uAddress = editLocate.getText().toString() + ", " + addressList.get(0).getAddressLine(0);

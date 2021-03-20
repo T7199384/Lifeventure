@@ -16,6 +16,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import com.example.lifeventure.Classes.GPSChecker;
 import com.example.lifeventure.Dialogs.GearDialog;
 import com.example.lifeventure.Dialogs.LevelDisplayDialog;
 
@@ -27,8 +28,6 @@ import java.util.Iterator;
 import java.util.Set;
 
 public class ProfileActivity extends AppCompatActivity {
-
-    //TODO finish the profile buttons and everything you jerk
 
     public static final String PROFILE = "Profile";
     public static final String GEAR = "Gear";
@@ -45,6 +44,8 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
+        setTitle("Your adventurer");
 
         final ImageButton tasks= findViewById(R.id.taskButton);
         final ImageButton fight = findViewById(R.id.fightButton);
@@ -68,6 +69,7 @@ public class ProfileActivity extends AppCompatActivity {
                 startActivity(new Intent(ProfileActivity.this, SettingsActivity.class));
             }
         });
+
 
         SharedPreferences profile = getSharedPreferences(PROFILE,MODE_PRIVATE);
         lvl=profile.getInt(String.valueOf(PROFILE_LEVEL),1);
@@ -216,6 +218,19 @@ public class ProfileActivity extends AppCompatActivity {
                         .show();
             }
         });
+    }
+
+    @Override
+    public void onBackPressed(){
+        startActivity(new Intent(this, MainActivity.class));
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+
+        GPSChecker gpsChecker = new GPSChecker();
+        gpsChecker.create(this, this);
     }
 }
 

@@ -1,15 +1,18 @@
 package com.example.lifeventure;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
@@ -60,6 +63,8 @@ public class TaskActivity extends AppCompatActivity implements CreateTaskDialog.
         final ImageButton fight = findViewById(R.id.fightButton);
         final ImageButton settings = findViewById(R.id.settingsButton);
 
+        setTitle("Create some tasks");
+
         loadProfile();
 
         profile.setOnClickListener(new View.OnClickListener() {
@@ -80,7 +85,6 @@ public class TaskActivity extends AppCompatActivity implements CreateTaskDialog.
                 startActivity(new Intent(TaskActivity.this, SettingsActivity.class));
             }
         });
-
 
         Button createTask = findViewById(R.id.taskCreate);
         createTask.setOnClickListener(new View.OnClickListener() {
@@ -192,7 +196,6 @@ public class TaskActivity extends AppCompatActivity implements CreateTaskDialog.
         SharedPreferences.Editor editor = sharedPreferences.edit();
         exp=exp+addExp;
         editor.putInt(String.valueOf(PROFILE_EXP), (exp));
-        Toast.makeText(TaskActivity.this, String.valueOf(exp), Toast.LENGTH_SHORT).show();
         lvl =(((exp)/1000)+1);
         editor.putInt(String.valueOf(PROFILE_LEVEL),lvl);
         if(lvl>currentLvl){
@@ -333,12 +336,6 @@ public class TaskActivity extends AppCompatActivity implements CreateTaskDialog.
         for(int i = 0; i<sharedPreferences.getInt("amountOfAddresses",0);i++){
             alertMessage=alertMessage+"Location "+i+": "+sharedPreferences.getString(String.valueOf(i),"Not Found")+"\n";
         }
-
-        new AlertDialog.Builder(this)
-                .setTitle("Location Prefs")
-                .setMessage(alertMessage)
-                .setNegativeButton("Exit",null)
-                .show();
     }
 
     private void startAlarm(Calendar calendar, String taskName, String taskDate) {
@@ -365,5 +362,10 @@ public class TaskActivity extends AppCompatActivity implements CreateTaskDialog.
         lvl = sharedPreferences.getInt(String.valueOf(PROFILE_LEVEL),1);
         exp = sharedPreferences.getInt(String.valueOf(PROFILE_EXP), 0);
         currentLvl=lvl;
+    }
+
+    @Override
+    public void onBackPressed(){
+        startActivity(new Intent(this, MainActivity.class));
     }
 }

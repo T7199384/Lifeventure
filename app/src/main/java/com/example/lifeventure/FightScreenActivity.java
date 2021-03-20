@@ -462,4 +462,18 @@ public class FightScreenActivity extends AppCompatActivity {
         new PrizeDialog(bundle, context).show(getSupportFragmentManager(),null);
     }
 
+    @Override
+    public void onBackPressed(){
+        SharedPreferences recordsPrefs = getSharedPreferences("Records",MODE_PRIVATE);
+        int recordLost = recordsPrefs.getInt("BattlesLost",0);
+        recordLost=recordLost+1;
+        SharedPreferences.Editor rEdit = recordsPrefs.edit();
+        rEdit.putInt("BattlesLost",recordLost);
+        rEdit.apply();
+        playerRun="You escape from the "+monsterNames[monsterId]+"!";
+        messageShow(playerRun);
+        startActivity(new Intent(FightScreenActivity.this, FightActivity.class));
+    }
+
+
 }

@@ -14,6 +14,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Switch;
 
+import com.example.lifeventure.Classes.GPSChecker;
+import com.example.lifeventure.Classes.LocationService;
 import com.google.android.gms.location.LocationRequest;
 
 import java.io.File;
@@ -23,6 +25,7 @@ public class SettingsActivity extends AppCompatActivity {
     public static final String PROFILE = "Profile";
     private static final int PROFILE_GENDER = 2;
     private Switch batterySwitch;
+    private Switch locationOnSwitch;
     SharedPreferences settings;
     LocationRequest locationRequest;
 
@@ -37,6 +40,8 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
+
+        setTitle("Settings");
 
         settings=getSharedPreferences("SETTINGS",MODE_PRIVATE);
 
@@ -142,7 +147,16 @@ public class SettingsActivity extends AppCompatActivity {
         });
     }
 
-    public void SavePowerOption(){
+    @Override
+    public void onBackPressed(){
+        startActivity(new Intent(this, MainActivity.class));
+    }
 
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+
+        GPSChecker gpsChecker = new GPSChecker();
+        gpsChecker.create(this, this);
     }
 }
